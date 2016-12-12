@@ -89,15 +89,13 @@ unsigned int f_destroyer(char* path) {
     }
     fclose(f);
 
-    // Confirmation utilisateur
     int ret = remove(path);
     if(ret != 0)
     {
        printf("Erreur : Suppression du dictionnaire impossible !");
        return 0;
     }
-
-    free(path);
+    
     return 1;
 }
 
@@ -198,6 +196,7 @@ while(1){
                 if(f_destroyer(str) == 1){
                     printf("Dictionnaire supprime avec succes !\n");
                 }
+                free(str);
                 break;
             case quitter:
                 exit(EXIT_SUCCESS);
@@ -373,7 +372,6 @@ void wordTraitement(int tf, poubelle* p1){
     while ((ch = getc ( p1->fSource )) != EOF ) { // parcours tant que pas fin de fichier
         if ( ch != '\n'){
             p1->line[index++] = ch; // insere � la suite tant que pas \n
-            printf("%s || %c\n", p1->line, ch);
         }else {
             p1->line[index] = '\0'; // remplace \n par un \0 fin de chaine
             index=0;
@@ -441,7 +439,6 @@ void traitementSuppr(poubelle* p2){
  */
 void traitementSearch(poubelle* p2){
     if(p2->resSearch != 1){
-            printf("DEBUG");
         if(strcmp(p2->line,p2->words) == 0) {
             printf("trouver");
             p2->resSearch = 1;
@@ -449,7 +446,6 @@ void traitementSearch(poubelle* p2){
     }
 }
 
-////////////////////////////////////////////////////////////////////////////
 /*
  *      Supprime l'ancien fichier
  *      et renomme le fichier temp
@@ -460,15 +456,10 @@ unsigned int remplaceTempToDico(char* path, poubelle* p1){
     char* tmpPath = ".\\ressources\\temp.txt";
     fclose(p1->fSortie);
     fclose(p1->fSource);
-    printf("%s|", path);
-    printf("RM1 - %d\n", remove(path));
-    printf("RN - %d\n", rename(tmpPath, path));
-    printf("%s|", path);
-    printf("%s|", tmpPath);
-    printf("RM2 - %d\n", remove(tmpPath));
+    remove(path);
+    rename(tmpPath, path);
     return 1;   // OK
 }
-/////////////////////////////////////////////////////////////////////////////
 
 /*
  *      Permet a l'utilisateur d'annuler
