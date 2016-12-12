@@ -1,0 +1,8 @@
+arbre
+chargeur
+cheval
+depart
+ecran
+fichier
+jeyaksan
+livre
