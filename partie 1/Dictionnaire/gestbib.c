@@ -19,7 +19,7 @@ unsigned int f_create(){
     const char extension[6] = ".txt";
 
     char fileName[50];
-    printf("Saisissez le nom du fichier sans espace :\n [A fr annul] :");
+    printf("Saisissez le nom du fichier sans espace :\n [A fr annul] : ");
     scanf("\n%s[^\n]", fileName);
 
     if(annulProcedure(fileName) == 1){
@@ -62,7 +62,8 @@ unsigned int f_create(){
             break;
         }
     }
-
+    f = fopen(path, "w+");
+    fclose(f);
     free(path);
 
     return 1;
