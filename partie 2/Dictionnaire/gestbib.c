@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <dirent.h>     // Pour l'utilisation des dossiers
 #include "gestbib.h"
+#include "gestrech.h"
 
 
 
@@ -371,6 +372,11 @@ void wordTraitement(int tf, poubelle* p1){
     p1->fSortie = fopen(".\\ressources\\temp.txt", "w");
     char ch = ' ';
     int index = 0;
+    int seuil = 0;
+    if(tf == 3){ // Récuperation du seuil
+        printf("Saisir le seuil : ");
+        scanf("%d", &seuil);
+    }
     while ((ch = getc ( p1->fSource )) != EOF ) { // parcours tant que pas fin de fichier
         if ( ch != '\n'){
             p1->line[index++] = ch; // insere � la suite tant que pas \n
@@ -385,11 +391,8 @@ void wordTraitement(int tf, poubelle* p1){
                 traitementSuppr(p1);
             }else if(tf == 3){
                 // FSCEARCH
-                traitementSearch(p1);
+                traitementSearch(p1, seuil);
             }
-        }
-        if((p1->resSearch == 1) && (tf == 3)){
-            break;
         }
     }
     typeErr(tf, p1);
@@ -439,12 +442,10 @@ void traitementSuppr(poubelle* p2){
  *      Fonction qui cherche un mot
  *      dans le dictionnaire choisit
  */
-void traitementSearch(poubelle* p2){
-    if(p2->resSearch != 1){
-        if(strcmp(p2->line,p2->words) == 0) {
-            printf("trouver");
-            p2->resSearch = 1;
-        }
+void traitementSearch(poubelle* p2, int seuil){
+    if((strDiff(p2->words,p2->line)) <= seuil){
+        printf("%s\n", p2->line);
+        p2->resSearch = 1;
     }
 }
 
