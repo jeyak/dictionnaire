@@ -10,6 +10,10 @@ typedef struct poubelle{
     int resSearch;
 }poubelle;
 
+/// arbre => Arbre // Change la première lettre du mot en majuscule
+/// \param string
+void Capitalize(char string[]);
+
 /// Cr�e un fichier en prenant en param�tre le
 /// le chemin du fichier
 /// Exemple :
