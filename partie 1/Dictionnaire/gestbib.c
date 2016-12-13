@@ -448,6 +448,7 @@ void traitementInsert(poubelle* p2){
  *      dans le dictionnaire choisit
  */
 void traitementSuppr(poubelle* p2){
+    Capitalize(p2->line);
     if(strcmp(p2->words,p2->line) != 0) {
         fprintf(p2->fSortie, "%s\n", p2->line);
     }else{
