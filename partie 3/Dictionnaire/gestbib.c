@@ -7,7 +7,27 @@
 #include "gestbib.h"
 #include "gestrech.h"
 
+/// arbre => Arbre // Change la première lettre du mot en majuscule
+/// \param string
+void Capitalize(char string[]){
+    int i;
+    int x = strlen(string);
+     //Efface les caractéres spéciaux
+     for (i=0;i<x;i++){
+         if(string[i] >= 32 && string[i] <= 64  || string[i] >= 122) {
+                string[i] = NULL;
+         }
+    }
 
+    for (i=0;i<x;i++){
+         if( i == 0 && string[i] > 96 && string[i] < 123 ) {
+            string[i] -= 32;
+
+         }else if(i > 0 && string[i] > 64 && string[i] < 96) {
+            string[i] += 32;
+         }
+    }
+}
 
 /// Cree un fichier en prenant en parametre le
 /// le chemin du fichier
@@ -405,20 +425,22 @@ void wordTraitement(int tf, poubelle* p1){
  *      Respect de l'ordre alphab�tique
  */
 void traitementInsert(poubelle* p2){
+    Capitalize(p2->words);
+    Capitalize(p2->line);
     if (p2->resSearch != 0){
         fprintf(p2->fSortie, "%s\n", p2->line);
     }else{
        if(strcmp(p2->words,p2->line) < 0) {
-            fprintf(p2->fSortie, "%s\n", p2->words);
-            fprintf(p2->fSortie, "%s\n", p2->line);
-            printf("Insertion effectue\n");
-            p2->resSearch = 1;
+           fprintf(p2->fSortie, "%s\n", p2->words);
+           fprintf(p2->fSortie, "%s\n", p2->line);
+           printf("Insertion effectue\n");
+           p2->resSearch = 1;
         }else if (strcmp(p2->words,p2->line) == 0) {
-            printf("Le mot existe deja\n");
-            fprintf(p2->fSortie, "%s\n", p2->line);
-            p2->resSearch = 2; // Deja present = 2
+           printf("Le mot existe deja\n");
+           fprintf(p2->fSortie, "%s\n", p2->line);
+           p2->resSearch = 2; // Deja present = 2
         }else{
-            fprintf(p2->fSortie, "%s\n", p2->line);
+           fprintf(p2->fSortie, "%s\n", p2->line);
         }
     }
 }
@@ -443,7 +465,8 @@ void traitementSuppr(poubelle* p2){
  *      dans le dictionnaire choisit
  */
 void traitementSearch(poubelle* p2, int seuil){
-    if((strDiff(p2->words,p2->line)) <= seuil){
+    Capitalize(p2->line);
+    if((strDiff(p2->words,p2->line)) <= seuil){ // on print uniquement le diifference de caractère est inferieur ou égale au seuil
         printf("%s\n", p2->line);
         p2->resSearch = 1;
     }
