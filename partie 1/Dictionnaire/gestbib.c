@@ -36,7 +36,6 @@ unsigned int f_create(){
     char choice;
     FILE *f = fopen(path, "r");
     int result = fExiste(f);
-    // printf("%d", result);
     while((result == 1) && (((choice != 'n') || (choice != 'N'))) && (choice != 'A' || choice !=  'a')){
         fclose(f);
         do{
@@ -356,6 +355,10 @@ unsigned int mainWord(char* path, int typeFunc){
     wordTraitement(typeFunc, p);
     if(typeFunc != 3){
         remplaceTempToDico(path, p);
+    }else{
+        fclose(p->fSortie);
+        fclose(p->fSource);
+        remove(".\\ressources\\temp.txt");
     }
     free(p);
     return 1;
@@ -366,7 +369,6 @@ unsigned int mainWord(char* path, int typeFunc){
  */
 void wordTraitement(int tf, poubelle* p1){
     p1->fSortie = fopen(".\\ressources\\temp.txt", "w");
-    printf("%s@\n", p1->line);
     char ch = ' ';
     int index = 0;
     while ((ch = getc ( p1->fSource )) != EOF ) { // parcours tant que pas fin de fichier
