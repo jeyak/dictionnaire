@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include "gestbib.h"
+#include "gestorth.h"
 
 #ifndef WIN32
 
@@ -14,6 +15,8 @@
 
 int main(int argc, char** argv)
 {
-    startMenu();
+    // startMenu();
+    afficheNotFound(1);
+    getch();
     return 0;
 }
