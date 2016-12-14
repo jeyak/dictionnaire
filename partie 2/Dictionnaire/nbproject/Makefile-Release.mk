@@ -37,7 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/gestbib.o \
 	${OBJECTDIR}/gestrech.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main2.o
 
 
 # C Compiler Flags
@@ -74,10 +74,10 @@ ${OBJECTDIR}/gestrech.o: gestrech.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gestrech.o gestrech.c
 
-${OBJECTDIR}/main.o: main.c
+${OBJECTDIR}/main2.o: main2.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main2.o main2.c
 
 # Subprojects
 .build-subprojects:

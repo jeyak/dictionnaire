@@ -16,7 +16,7 @@
                    projectFiles="true">
       <itemPath>gestbib.c</itemPath>
       <itemPath>gestrech.c</itemPath>
-      <itemPath>main.c</itemPath>
+      <itemPath>main2.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -48,7 +48,7 @@
       </item>
       <item path="gestrech.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="main.c" ex="false" tool="0" flavor2="0">
+      <item path="main2.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -79,7 +79,7 @@
       </item>
       <item path="gestrech.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="main.c" ex="false" tool="0" flavor2="0">
+      <item path="main2.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

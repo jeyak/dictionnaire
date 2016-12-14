@@ -11,7 +11,7 @@ typedef struct part3{
 
 void afficheNotFound(int tp);
 void afficheAndWordProche(part3* p1, int tp);
-void correctTxt(part3* p2);
+unsigned int correctTxt(part3* p2, FILE* newTxt);
 
 #endif /* GESTORTH_H */
 

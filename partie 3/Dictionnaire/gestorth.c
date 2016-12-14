@@ -53,9 +53,18 @@ void afficheNotFound(int tp){ // partie 1 affichage des mots non present
                 }
             }
             if(count != 1){
-                printf("%s\n", p->wordTxt); // demmande de liste de mots non trouvé
-                if(tp > 1){
-                    afficheAndWordProche(p, tp);
+                
+                switch(tp){
+                    case 1:
+                        printf("%s\n", p->wordTxt); // demmande de liste de mots non trouvé
+                        break;
+                    case 2:
+                        printf("%s\n", p->wordTxt); // demmande de liste de mots non trouvé
+                        afficheAndWordProche(p, tp);
+                        break;
+                    case 3:
+                        afficheAndWordProche(p, tp);
+                        break;
                 }
             }
             count = 0;
@@ -69,6 +78,8 @@ void afficheAndWordProche(part3* p1, int tp){
     unsigned int index = 0;
     
     rewind(p1->fDico);
+    FILE* newTxt = fopen(".\\ressources\\cor.txt", "a");
+    unsigned int res = 0;
     while ((ch = getc ( p1->fDico )) != EOF ) { // parcours tant que pas fin de fichier
         if ( ch != '\n' && ch != ' ' && ch != ',' && ch != '.'){
             p1->wordDico[index++] = ch; // insere   la suite tant que pas \n
@@ -77,25 +88,28 @@ void afficheAndWordProche(part3* p1, int tp){
             index=0;
             Capitalize(p1->wordTxt);
             
-            
             if(tp == 2){
                 if((strDiff(p1->wordTxt,p1->wordDico)) <= 2){
                     printf("\t%s\n", p1->wordDico);
-                }else{
-                    correctTxt(p1);
                 }
+            }else{
+                res = correctTxt(p1, newTxt);
             }
+            
         }
     }
+    if(res == 0){
+        fprintf(newTxt, "%s ", p1->wordTxt);
+    }
+    fclose(newTxt);
 }
 
 
-void correctTxt(part3* p2){
-    FILE* newTxt = fopen(".\\ressources\\cor.txt", "w");
-    if((strDiff(p2->wordTxt, p2->wordDico)) <= 1){ // Seuil de 1
+unsigned int correctTxt(part3* p2, FILE* newTxt){
+    unsigned int count = 0;
+    if((strDiff(p2->wordTxt, p2->wordDico)) == 1){ // Seuil de 1
+        count = 1;
         fprintf(newTxt, "%s ", p2->wordDico);
-    }else{
-        fprintf(newTxt, "%s ", p2->wordTxt);
     }
-
+    return count;
 }

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <dirent.h>     // Pour l'utilisation des dossiers
 #include "gestbib.h"
+#include "gestorth.h"
 
 #define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
 #define LEN 60000 // nombre de mot moyens dans un dico
@@ -148,7 +149,9 @@ enum reponseStartMenu{
     motSuppr = 52,
     recherche = 53,
     supprimer = 54,
-    quitter = 55
+    notPresent = 55,
+    suggest = 56,
+    quitter = 57
 };
 
 
@@ -175,10 +178,12 @@ while(1){
              printf("4 - Suprimer un mot\n");
              printf("5 - Effectuer une recherche\n");
              printf("6 - Supprimer un dictionnaire\n");
-             printf("7 - Quitter\n");
+             printf("7 - Afficher les mots non present dans le dctionnaire\n");
+             printf("8 - Afficher les suggestions\n");
+             printf("9 - Quitter\n");
              printf("\nVotre choix -> ");
              scanf("\n%[^\n]", &answer);
-        }while(answer<49 || answer>55);
+        }while(answer<49 || answer>57);
 
         switch(answer){
             case creer:
@@ -219,6 +224,12 @@ while(1){
                     printf("Dictionnaire supprime avec succes !\n");
                 }
                 free(str);
+                break;
+            case notPresent:
+                afficheNotFound(1);
+                break;
+            case suggest:
+                afficheNotFound(2);
                 break;
             case quitter:
                 exit(EXIT_SUCCESS);

@@ -38,7 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/gestbib.o \
 	${OBJECTDIR}/gestorth.o \
 	${OBJECTDIR}/gestrech.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main3.o
 
 
 # C Compiler Flags
@@ -80,10 +80,10 @@ ${OBJECTDIR}/gestrech.o: gestrech.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gestrech.o gestrech.c
 
-${OBJECTDIR}/main.o: main.c
+${OBJECTDIR}/main3.o: main3.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main3.o main3.c
 
 # Subprojects
 .build-subprojects:
