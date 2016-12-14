@@ -7,7 +7,7 @@
 #include "gestbib.h"
 
 #define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
-#define LEN 30000 // nombre de mot moyens dans un dico
+#define LEN 60000 // nombre de mot moyens dans un dico
 
 /// arbre => Arbre // Change la première lettre du mot en majuscule
 /// \param string
@@ -600,5 +600,5 @@ unsigned int txtToDico () {
     remove(txtName);
     rename(dicoName, txtName);
 
-        return 1;
+    return 1;
 }
