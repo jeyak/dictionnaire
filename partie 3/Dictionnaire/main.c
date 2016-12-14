@@ -15,8 +15,7 @@
 
 int main(int argc, char** argv)
 {
-    // startMenu();
-    afficheNotFound(2);
+    startMenu();
     getch();
     return 0;
 }

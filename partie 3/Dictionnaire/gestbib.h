@@ -1,6 +1,8 @@
 #ifndef GESTBIB_H_INCLUDED
 #define GESTBIB_H_INCLUDED
 
+#define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
+#define LEN 30000 // nombre de mot moyens dans un dico
 
 typedef struct dataFile{
     char words[30]; //d'apres la source d'Ahmed
@@ -92,7 +94,7 @@ unsigned int mainWord(char* path, int typeFunc);
  *      avec le nom de l'ancien fichier
  *      return 1 ou 0 si probleme
  */
-unsigned int remplaceTempToDico(char* path, dataFile* p1);
+unsigned int replaceTempToDico(char* path, dataFile* p1);
 
 /*
  *      Permet a l'utilisateur d'annuler
@@ -153,8 +155,8 @@ unsigned int wordsScan(char* path, int func, dataFile* p1);
 
 unsigned int fsearch (char * words, char * path);
 
-
-
-unsigned int txtToDico ()
+//
+// Import txt vers dico.txt
+unsigned int txtToDico();
 
 #endif // GESTBIB_H_INCLUDED
