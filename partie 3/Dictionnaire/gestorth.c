@@ -49,6 +49,7 @@ void afficheNotFound(int tp){ // partie 1 affichage des mots non present
             }
         }
     }
+    free(p);
 }
 
 void afficheAndWordProche(part3* p1, int tp){
