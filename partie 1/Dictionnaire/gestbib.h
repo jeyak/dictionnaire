@@ -94,7 +94,7 @@ unsigned int mainWord(char* path, int typeFunc);
  *      avec le nom de l'ancien fichier
  *      return 1 ou 0 si probleme
  */
-unsigned int remplaceTempToDico(char* path, poubelle* p1);
+unsigned int replaceTempToDico(char* path, poubelle* p1);
 
 /*
  *      Permet a l'utilisateur d'annuler

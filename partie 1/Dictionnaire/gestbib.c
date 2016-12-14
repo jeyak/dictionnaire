@@ -12,16 +12,16 @@
 /// arbre => Arbre // Change la première lettre du mot en majuscule
 /// \param string
 void Capitalize(char string[]){
-    int i;
-    int x = strlen(string);
+    unsigned int i;
+    unsigned int len = strlen(string);
      //Efface les caractéres spéciaux
-     for (i=0;i<x;i++){
+     for (i=0;i<len;i++){
          if(string[i] >= 32 && string[i] <= 64  || string[i] >= 122) {
                 string[i] = NULL;
          }
     }
 
-    for (i=0;i<x;i++){
+    for (i=0;i<len;i++){
          if( i == 0 && string[i] > 96 && string[i] < 123 ) {
             string[i] -= 32;
 
@@ -104,9 +104,8 @@ unsigned int f_create(){
 unsigned int f_destroyer(char* path) {
 
     FILE* f = fopen(path, "r");
-    int result = fExiste(f);
 
-    if(result == 0){
+    if(fExiste(f) == 0){
         printf("Le dictionnaire n'existe pas !");
         return 0;
     }
@@ -309,6 +308,7 @@ char* fUse(){
         printf("Choisir un nom de dictionnaire\n [A for annul] : ");
         scanf("%s", fName);
         if(annulProcedure(fName) == 1){
+            free(path);
             return NULL;
         }
         strcpy(path, folder);
@@ -374,6 +374,7 @@ unsigned int mainWord(char* path, int typeFunc){
     p->resSearch = 0;
     if(wordsScan(path, typeFunc, p) == 0){
         free(p);
+        free(path);
         return 0; // ECHEC
     }
     wordTraitement(typeFunc, p);
@@ -385,6 +386,7 @@ unsigned int mainWord(char* path, int typeFunc){
         remove(".\\ressources\\temp.txt");
     }
     free(p);
+    free(path);
     return 1;
 }
 
