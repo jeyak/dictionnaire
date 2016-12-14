@@ -15,17 +15,28 @@ void afficheNotFound(int tp){ // partie 1 affichage des mots non present
 
     part3* p = malloc(sizeof(part3));
     p->fTxt = fopen(".\\ressources\\readFile.txt", "r");
-    p->fDico = fopen(".\\ressources\\aaa.txt", "r");
-
+    
+    char* str = NULL;
+    str = fUse();
+    if(str == NULL){
+        return;
+    }
+    p->fDico = fopen(str, "r");
     char ch = ' ';
-
+    
     unsigned int i, j, count = 0, index = 0;
-
+    
+    if(!fExiste(p->fTxt)) // Si le fichier n'existe pas
+    {// Erreur
+        printf("Le fichier d'entree n'existe pas !");
+        return;
+    }
+    
     while ((ch = getc ( p->fTxt )) != EOF ) { // parcours tant que pas fin de fichier
-        if ( ch != '\n'){
-            p->wordTxt[index++] = ch; // insere   la suite tant que pas \n
+        if ( ch != ' '){
+            p->wordTxt[index++] = ch; // insere   la suite tant que pas ' '
         }else {
-            p->wordTxt[index] = '\0'; // remplace \n par un \0 fin de chaine
+            p->wordTxt[index] = '\0'; // remplace ' ' par un \0 fin de chaine
             index=0;
             Capitalize(p->wordTxt);
             while ((ch = getc ( p->fDico )) != EOF ) { // parcours tant que pas fin de fichier
@@ -47,6 +58,7 @@ void afficheNotFound(int tp){ // partie 1 affichage des mots non present
                     afficheAndWordProche(p, tp);
                 }
             }
+            count = 0;
         }
     }
     free(p);
@@ -55,6 +67,8 @@ void afficheNotFound(int tp){ // partie 1 affichage des mots non present
 void afficheAndWordProche(part3* p1, int tp){
     char ch = ' ';
     unsigned int index = 0;
+    
+    rewind(p1->fDico);
     while ((ch = getc ( p1->fDico )) != EOF ) { // parcours tant que pas fin de fichier
         if ( ch != '\n' && ch != ' ' && ch != ',' && ch != '.'){
             p1->wordDico[index++] = ch; // insere   la suite tant que pas \n
@@ -75,7 +89,7 @@ void afficheAndWordProche(part3* p1, int tp){
 
 
 void correctTxt(part3* p2){
-    FILE* newTxt = fopen("NULL", "w");
+    FILE* newTxt = fopen(".\\ressources\\cor.txt", "w");
     if((strDiff(p2->wordTxt, p2->wordDico)) <= 1){
         fprintf(newTxt, "%s ", p2->wordDico);
     }else{
