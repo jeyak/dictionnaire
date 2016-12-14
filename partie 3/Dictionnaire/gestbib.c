@@ -5,21 +5,23 @@
 #include <unistd.h>
 #include <dirent.h>     // Pour l'utilisation des dossiers
 #include "gestbib.h"
-#include "gestrech.h"
+
+#define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
+#define LEN 60000 // nombre de mot moyens dans un dico
 
 /// arbre => Arbre // Change la première lettre du mot en majuscule
 /// \param string
 void Capitalize(char string[]){
-    int i;
-    int x = strlen(string);
+    unsigned int i;
+    unsigned int len = strlen(string);
      //Efface les caractéres spéciaux
-     for (i=0;i<x;i++){
+     for (i=0;i<len;i++){
          if(string[i] >= 32 && string[i] <= 64  || string[i] >= 122) {
                 string[i] = NULL;
          }
     }
 
-    for (i=0;i<x;i++){
+    for (i=0;i<len;i++){
          if( i == 0 && string[i] > 96 && string[i] < 123 ) {
             string[i] -= 32;
 
@@ -67,6 +69,7 @@ unsigned int f_create(){
 
         if ((choice == 'A') || (choice == 'a')){
             printf("Vous avez annule\n");
+            free(path);
             return 0;
         }
 
@@ -101,9 +104,8 @@ unsigned int f_create(){
 unsigned int f_destroyer(char* path) {
 
     FILE* f = fopen(path, "r");
-    int result = fExiste(f);
 
-    if(result == 0){
+    if(fExiste(f) == 0){
         printf("Le dictionnaire n'existe pas !");
         return 0;
     }
@@ -185,7 +187,7 @@ while(1){
                 }
                 break;
             case importer:
-                //------------------------------>
+                txtToDico();
                 break;
             case motInsert:
                 str = fUse();
@@ -306,6 +308,7 @@ char* fUse(){
         printf("Choisir un nom de dictionnaire\n [A for annul] : ");
         scanf("%s", fName);
         if(annulProcedure(fName) == 1){
+            free(path);
             return NULL;
         }
         strcpy(path, folder);
@@ -342,7 +345,7 @@ char* fNameDecoupage(char* str){
  *      1 si tout est correct
  */
 
-unsigned int wordsScan(char* path, int func, poubelle* p1){
+unsigned int wordsScan(char* path, int func, dataFile* p1){
      p1->fSource = fopen(path, "r"); // lecture
 
     if(fExiste(p1->fSource) == 0){
@@ -367,36 +370,33 @@ unsigned int wordsScan(char* path, int func, poubelle* p1){
  *      1 si tout est bon
  */
 unsigned int mainWord(char* path, int typeFunc){
-    poubelle* p = malloc(sizeof(poubelle));
+    dataFile* p = malloc(sizeof(dataFile));
     p->resSearch = 0;
     if(wordsScan(path, typeFunc, p) == 0){
         free(p);
+        free(path);
         return 0; // ECHEC
     }
     wordTraitement(typeFunc, p);
     if(typeFunc != 3){
-        remplaceTempToDico(path, p);
+        replaceTempToDico(path, p);
     }else{
         fclose(p->fSortie);
         fclose(p->fSource);
         remove(".\\ressources\\temp.txt");
     }
     free(p);
+    free(path);
     return 1;
 }
 
 /*
  *      Fonction qui effectue le traitement demander
  */
-void wordTraitement(int tf, poubelle* p1){
+void wordTraitement(int tf, dataFile* p1){
     p1->fSortie = fopen(".\\ressources\\temp.txt", "w");
     char ch = ' ';
-    int index = 0;
-    int seuil = 0;
-    if(tf == 3){ // Récuperation du seuil
-        printf("Saisir le seuil : ");
-        scanf("%d", &seuil);
-    }
+    unsigned int index = 0;
     while ((ch = getc ( p1->fSource )) != EOF ) { // parcours tant que pas fin de fichier
         if ( ch != '\n'){
             p1->line[index++] = ch; // insere � la suite tant que pas \n
@@ -411,8 +411,11 @@ void wordTraitement(int tf, poubelle* p1){
                 traitementSuppr(p1);
             }else if(tf == 3){
                 // FSCEARCH
-                traitementSearch(p1, seuil);
+                traitementSearch(p1);
             }
+        }
+        if((p1->resSearch == 1) && (tf == 3)){
+            break;
         }
     }
     typeErr(tf, p1);
@@ -424,23 +427,23 @@ void wordTraitement(int tf, poubelle* p1){
  *      dans le dictionnaire choisit
  *      Respect de l'ordre alphab�tique
  */
-void traitementInsert(poubelle* p2){
+void traitementInsert(dataFile* p2){
     Capitalize(p2->words);
     Capitalize(p2->line);
     if (p2->resSearch != 0){
         fprintf(p2->fSortie, "%s\n", p2->line);
     }else{
        if(strcmp(p2->words,p2->line) < 0) {
-           fprintf(p2->fSortie, "%s\n", p2->words);
-           fprintf(p2->fSortie, "%s\n", p2->line);
-           printf("Insertion effectue\n");
-           p2->resSearch = 1;
+            fprintf(p2->fSortie, "%s\n", p2->words);
+            fprintf(p2->fSortie, "%s\n", p2->line);
+            printf("Insertion effectue\n");
+            p2->resSearch = 1;
         }else if (strcmp(p2->words,p2->line) == 0) {
-           printf("Le mot existe deja\n");
-           fprintf(p2->fSortie, "%s\n", p2->line);
-           p2->resSearch = 2; // Deja present = 2
+            printf("Le mot existe deja\n");
+            fprintf(p2->fSortie, "%s\n", p2->line);
+            p2->resSearch = 2; // Deja present = 2
         }else{
-           fprintf(p2->fSortie, "%s\n", p2->line);
+            fprintf(p2->fSortie, "%s\n", p2->line);
         }
     }
 }
@@ -450,7 +453,7 @@ void traitementInsert(poubelle* p2){
  *      Fonction qui supprime un mot
  *      dans le dictionnaire choisit
  */
-void traitementSuppr(poubelle* p2){
+void traitementSuppr(dataFile* p2){
     Capitalize(p2->line);
     if(strcmp(p2->words,p2->line) != 0) {
         fprintf(p2->fSortie, "%s\n", p2->line);
@@ -465,9 +468,9 @@ void traitementSuppr(poubelle* p2){
  *      Fonction qui cherche un mot
  *      dans le dictionnaire choisit
  */
-void traitementSearch(poubelle* p2, int seuil){
+void traitementSearch(dataFile* p2, int seuil){
     Capitalize(p2->line);
-    if((strDiff(p2->words,p2->line)) <= seuil){ // on print uniquement le diifference de caractère est inferieur ou égale au seuil
+    if((strDiff(p2->words,p2->line)) <= seuil){
         printf("%s\n", p2->line);
         p2->resSearch = 1;
     }
@@ -479,8 +482,8 @@ void traitementSearch(poubelle* p2, int seuil){
  *      avec le nom de l'ancien fichier
  *      return 1 ou 0 si probleme
  */
-unsigned int remplaceTempToDico(char* path, poubelle* p1){
-    char* tmpPath = ".\\ressources\\temp.txt";
+unsigned int replaceTempToDico(char* path, dataFile* p1){
+    const char tmpPath[26] = {".\\ressources\\temp.txt"};
     fclose(p1->fSortie);
     fclose(p1->fSource);
     remove(path);
@@ -524,7 +527,7 @@ void printPrompt(int nb){
 /*
  *      Fonction qui gere les erreur de traitement
  */
-void typeErr(int tf, poubelle* p2){
+void typeErr(int tf, dataFile* p2){
     if(p2->resSearch == 0){
         switch(tf){
             case 1:
@@ -540,38 +543,60 @@ void typeErr(int tf, poubelle* p2){
 }
 
 
-// --------------------------------------------------------------------
+/// Import txt vers dico.txt
+/// \return 
+unsigned int txtToDico () {
 
-unsigned int fsearch (char * words, char * path) {
-    FILE *fp = fopen(path,"r");
-    unsigned int exist = fExiste(fp);
-    if (0 == exist) {
-        return 0;
+    char name[LEN][SIZE]; /* Data records */
+    char hold[LEN] ;
+    unsigned int i = 0;
+    unsigned int j; /* indices of array */
+    unsigned int last ; /* index of last item in array */
+    printf("Veullez choisir entrer le nom du fichier txt");
+    char *txtName = fUse();
+    const char dicoName[26] = {".\\ressources\\temp.txt"};
+
+    FILE *fTxt = fopen(txtName,"r");
+    FILE *fDico = fopen(dicoName,"w");
+    
+    if(fExiste(fTxt) == 0) {
+        return 0; //Erreur
     }
-    char line[1024];
-    char ch = getc ( fp );
-    int x = 0;
-    int index = 0;
-    while ((ch = getc (fp)) != EOF ) { // parcours tant que pas fin de fichier
-        if ( ch != '\n'){
-            line[index++] = ch; // ins�re � la suite tant que pas \n
-        }else {
-            line[index] = '\0'; // remplace \n par un \0 fin de chaine
-            index=0;
-            printf("line = %s\nwords = %s\n", line,words);
-           if(strcmp(line,words) == 0) {
-                printf("trouver");
-                x = 1;
-                break;
+    char c;
+    while(!feof(fTxt)) {  
+        fscanf( fTxt, "%s", name[i] );
+        Capitalize(name[i]);
+        i++;
+    }
+    last = i - 1 ;
+    fclose( fTxt );
+
+    //trie à bull
+    for (i = last ; i > 0 ; i--) {
+        for (j = 1 ; j <= i ; j++) {
+            if(strcmp(name[j],name[j - 1]) == 0) {
+                strcpy(name[j-1],"");
+            }else if (strcmp(name[j],name[j - 1]) < 0) {
+                strcpy(hold,name[j]);
+                strcpy(name[j],name[j - 1]);
+                strcpy(name[j - 1],hold);
+            }
+        }
+    }
+    // ecriture dans le fichier temp
+    for (i = 0 ; i <= last ; i++) {
+        if( strcmp(name[i],"") != 0) {
+            if(i == last ) {
+                fprintf(fDico,"%s",name[i]);
+            }else {
+                fprintf(fDico,"%s\n",name[i]);
             }
         }
     }
 
-    fclose ( fp );
+    fclose(fDico);
+    remove(txtName);
+    rename(dicoName, txtName);
 
-    if (1 != x) {
-        printf("Mot introuvable");
-        return 0;
-    }
     return 1;
 }

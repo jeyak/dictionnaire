@@ -76,6 +76,8 @@ void afficheAndWordProche(part3* p1, int tp){
             p1->wordDico[index] = '\0'; // remplace \n par un \0 fin de chaine
             index=0;
             Capitalize(p1->wordTxt);
+            
+            
             if(tp == 2){
                 if((strDiff(p1->wordTxt,p1->wordDico)) <= 2){
                     printf("\t%s\n", p1->wordDico);
@@ -90,7 +92,7 @@ void afficheAndWordProche(part3* p1, int tp){
 
 void correctTxt(part3* p2){
     FILE* newTxt = fopen(".\\ressources\\cor.txt", "w");
-    if((strDiff(p2->wordTxt, p2->wordDico)) <= 1){
+    if((strDiff(p2->wordTxt, p2->wordDico)) <= 1){ // Seuil de 1
         fprintf(newTxt, "%s ", p2->wordDico);
     }else{
         fprintf(newTxt, "%s ", p2->wordTxt);

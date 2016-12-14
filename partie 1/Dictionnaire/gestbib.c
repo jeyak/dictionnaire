@@ -345,7 +345,7 @@ char* fNameDecoupage(char* str){
  *      1 si tout est correct
  */
 
-unsigned int wordsScan(char* path, int func, poubelle* p1){
+unsigned int wordsScan(char* path, int func, dataFile* p1){
      p1->fSource = fopen(path, "r"); // lecture
 
     if(fExiste(p1->fSource) == 0){
@@ -370,7 +370,7 @@ unsigned int wordsScan(char* path, int func, poubelle* p1){
  *      1 si tout est bon
  */
 unsigned int mainWord(char* path, int typeFunc){
-    poubelle* p = malloc(sizeof(poubelle));
+    dataFile* p = malloc(sizeof(dataFile));
     p->resSearch = 0;
     if(wordsScan(path, typeFunc, p) == 0){
         free(p);
@@ -393,7 +393,7 @@ unsigned int mainWord(char* path, int typeFunc){
 /*
  *      Fonction qui effectue le traitement demander
  */
-void wordTraitement(int tf, poubelle* p1){
+void wordTraitement(int tf, dataFile* p1){
     p1->fSortie = fopen(".\\ressources\\temp.txt", "w");
     char ch = ' ';
     unsigned int index = 0;
@@ -427,7 +427,7 @@ void wordTraitement(int tf, poubelle* p1){
  *      dans le dictionnaire choisit
  *      Respect de l'ordre alphab�tique
  */
-void traitementInsert(poubelle* p2){
+void traitementInsert(dataFile* p2){
     Capitalize(p2->words);
     Capitalize(p2->line);
     if (p2->resSearch != 0){
@@ -453,7 +453,7 @@ void traitementInsert(poubelle* p2){
  *      Fonction qui supprime un mot
  *      dans le dictionnaire choisit
  */
-void traitementSuppr(poubelle* p2){
+void traitementSuppr(dataFile* p2){
     Capitalize(p2->line);
     if(strcmp(p2->words,p2->line) != 0) {
         fprintf(p2->fSortie, "%s\n", p2->line);
@@ -468,7 +468,7 @@ void traitementSuppr(poubelle* p2){
  *      Fonction qui cherche un mot
  *      dans le dictionnaire choisit
  */
-void traitementSearch(poubelle* p2){
+void traitementSearch(dataFile* p2){
     Capitalize(p2->line);
     if(p2->resSearch != 1){
         if(strcmp(p2->line,p2->words) == 0) {
@@ -484,7 +484,7 @@ void traitementSearch(poubelle* p2){
  *      avec le nom de l'ancien fichier
  *      return 1 ou 0 si probleme
  */
-unsigned int replaceTempToDico(char* path, poubelle* p1){
+unsigned int replaceTempToDico(char* path, dataFile* p1){
     const char tmpPath[26] = {".\\ressources\\temp.txt"};
     fclose(p1->fSortie);
     fclose(p1->fSource);
@@ -529,7 +529,7 @@ void printPrompt(int nb){
 /*
  *      Fonction qui gere les erreur de traitement
  */
-void typeErr(int tf, poubelle* p2){
+void typeErr(int tf, dataFile* p2){
     if(p2->resSearch == 0){
         switch(tf){
             case 1:

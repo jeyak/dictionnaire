@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/gestbib.o \
+	${OBJECTDIR}/gestorth.o \
 	${OBJECTDIR}/gestrech.o \
 	${OBJECTDIR}/main.o
 
@@ -68,6 +69,11 @@ ${OBJECTDIR}/gestbib.o: gestbib.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gestbib.o gestbib.c
+
+${OBJECTDIR}/gestorth.o: gestorth.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gestorth.o gestorth.c
 
 ${OBJECTDIR}/gestrech.o: gestrech.c
 	${MKDIR} -p ${OBJECTDIR}

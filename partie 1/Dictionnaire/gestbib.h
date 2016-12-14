@@ -4,13 +4,13 @@
 #define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
 #define LEN 30000 // nombre de mot moyens dans un dico
 
-typedef struct poubelle{
+typedef struct dataFile{
     char words[30]; //d'apres la source d'Ahmed
     char line[30];
     FILE* fSource;
     FILE* fSortie;
     int resSearch;
-}poubelle;
+}dataFile;
 
 /// arbre => Arbre // Change la première lettre du mot en majuscule
 /// \param string
@@ -94,7 +94,7 @@ unsigned int mainWord(char* path, int typeFunc);
  *      avec le nom de l'ancien fichier
  *      return 1 ou 0 si probleme
  */
-unsigned int replaceTempToDico(char* path, poubelle* p1);
+unsigned int replaceTempToDico(char* path, dataFile* p1);
 
 /*
  *      Permet a l'utilisateur d'annuler
@@ -109,7 +109,7 @@ unsigned int annulProcedure(char* carac);
  *      Fonction qui cherche un mot
  *      dans le dictionnaire choisit
  */
-void traitementSearch(poubelle* p2);
+void traitementSearch(dataFile* p2);
 
 
 /*
@@ -117,13 +117,13 @@ void traitementSearch(poubelle* p2);
  *      dans le dictionnaire choisit
  *      Respect de l'ordre alphab�tique
  */
-void traitementInsert(poubelle* p2);
+void traitementInsert(dataFile* p2);
 
 /*
  *      Fonction qui supprime un mot
  *      dans le dictionnaire choisit
  */
-void traitementSuppr(poubelle* p2);
+void traitementSuppr(dataFile* p2);
 
 /*
  *      Fonction qui affiche un texte diff�rent
@@ -133,13 +133,13 @@ void printPrompt(int nb);
 /*
  *      Fonction qui gere les erreur de traitement
  */
-void typeErr(int tf, poubelle* p2);
+void typeErr(int tf, dataFile* p2);
 
 
 /*
  *      Fonction qui effectue le traitement demander
  */
-void wordTraitement(int tf, poubelle* p1);
+void wordTraitement(int tf, dataFile* p1);
 
 
 /*
@@ -148,7 +148,7 @@ void wordTraitement(int tf, poubelle* p1);
  *      Retourne 0 en cas d'erreur
  *      1 si tout est correct
  */
-unsigned int wordsScan(char* path, int func, poubelle* p1);
+unsigned int wordsScan(char* path, int func, dataFile* p1);
 
 
 // cherche un mot et printf si oui ou non le mot est dans le fichier
