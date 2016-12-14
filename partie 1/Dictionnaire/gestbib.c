@@ -543,51 +543,15 @@ void typeErr(int tf, poubelle* p2){
 }
 
 
-
-unsigned int fsearch (char * words, char * path) {
-    FILE *fp = fopen(path,"r");
-    unsigned int exist = fExiste(fp);
-    if (0 == exist) {
-        return 0;
-    }
-    char line[1024];
-    char ch = getc ( fp );
-    int x = 0;
-    int index = 0;
-    while ((ch = getc (fp)) != EOF ) { // parcours tant que pas fin de fichier
-        if ( ch != '\n'){
-            line[index++] = ch; // ins�re � la suite tant que pas \n
-        }else {
-            line[index] = '\0'; // remplace \n par un \0 fin de chaine
-            index=0;
-            printf("line = %s\nwords = %s\n", line,words);
-           if(strcmp(line,words) == 0) {
-                printf("trouver");
-                x = 1;
-                break;
-            }
-        }
-    }
-
-    fclose ( fp );
-
-    if (1 != x) {
-        printf("Mot introuvable");
-        return 0;
-    }
-    return 1;
-}
-
-
 /// Import txt vers dico.txt
 /// \return 
 unsigned int txtToDico () {
 
     char name[LEN][SIZE]; /* Data records */
     char hold[LEN] ;
-     int i = 0;
-     int j; /* indices of array */
-     int last ; /* index of last item in array */
+    unsigned int i = 0;
+    unsigned int j; /* indices of array */
+    unsigned int last ; /* index of last item in array */
     printf("Veullez choisir entrer le nom du fichier txt");
     char *txtName = fUse();
     const char dicoName[26] = {".\\ressources\\temp.txt"};
@@ -599,10 +563,8 @@ unsigned int txtToDico () {
         return 0; //Erreur
     }
     char c;
-    //for(i = 0 ; (c = getc ( fTxt )) != EOF; i++ ) {
-     while(!feof(fTxt)) {  
+    while(!feof(fTxt)) {  
         fscanf( fTxt, "%s", name[i] );
-        printf("%d - Result  = %s\n", i, name[i]);
         Capitalize(name[i]);
         i++;
     }
