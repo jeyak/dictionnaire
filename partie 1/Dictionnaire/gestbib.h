@@ -1,6 +1,8 @@
 #ifndef GESTBIB_H_INCLUDED
 #define GESTBIB_H_INCLUDED
 
+#define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
+#define LEN 30000 // nombre de mot moyens dans un dico
 
 typedef struct poubelle{
     char words[30]; //d'apres la source d'Ahmed
@@ -153,5 +155,8 @@ unsigned int wordsScan(char* path, int func, poubelle* p1);
 
 unsigned int fsearch (char * words, char * path);
 
+//
+// Import txt vers dico.txt
+unsigned int txtToDico();
 
 #endif // GESTBIB_H_INCLUDED

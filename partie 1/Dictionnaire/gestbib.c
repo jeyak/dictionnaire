@@ -6,6 +6,9 @@
 #include <dirent.h>     // Pour l'utilisation des dossiers
 #include "gestbib.h"
 
+#define SIZE 30 // Taille la plus grande d'un mots 'Hexakosioihexekontahexaphobie'
+#define LEN 30000 // nombre de mot moyens dans un dico
+
 /// arbre => Arbre // Change la première lettre du mot en majuscule
 /// \param string
 void Capitalize(char string[]){
@@ -66,6 +69,7 @@ unsigned int f_create(){
 
         if ((choice == 'A') || (choice == 'a')){
             printf("Vous avez annule\n");
+            free(path);
             return 0;
         }
 
@@ -184,7 +188,7 @@ while(1){
                 }
                 break;
             case importer:
-                //------------------------------>
+                txtToDico();
                 break;
             case motInsert:
                 str = fUse();
@@ -539,7 +543,6 @@ void typeErr(int tf, poubelle* p2){
 }
 
 
-// --------------------------------------------------------------------
 
 unsigned int fsearch (char * words, char * path) {
     FILE *fp = fopen(path,"r");
@@ -573,4 +576,65 @@ unsigned int fsearch (char * words, char * path) {
         return 0;
     }
     return 1;
+}
+
+
+/// Import txt vers dico.txt
+/// \return 
+unsigned int txtToDico () {
+
+    char name[LEN][SIZE]; /* Data records */
+    char hold[LEN] ;
+     int i = 0;
+     int j; /* indices of array */
+     int last ; /* index of last item in array */
+    printf("Veullez choisir entrer le nom du fichier txt");
+    char *txtName = fUse();
+     const char dicoName[26] = {".\\ressources\\temp.txt"};
+
+    FILE *fTxt = fopen("readFile.txt","r");
+    FILE *fDico = fopen(dicoName,"w");
+    
+    if(fExiste(fTxt) == 0) {
+        return 0; //Erreur
+    }
+    char c;
+    //for(i = 0 ; (c = getc ( fTxt )) != EOF; i++ ) {
+     while(!feof(fTxt)) {  
+        fscanf( fTxt, "%s", name[i] );
+        printf("%d - Result  = %s\n", i, name[i]);
+        Capitalize(name[i]);
+        i++;
+    }
+    last = i - 1 ;
+    fclose( fTxt );
+
+    //trie à bull
+    for (i = last ; i > 0 ; i--) {
+        for (j = 1 ; j <= i ; j++) {
+            if(strcmp(name[j],name[j - 1]) == 0) {
+                strcpy(name[j-1],"");
+            }else if (strcmp(name[j],name[j - 1]) < 0) {
+                strcpy(hold,name[j]);
+                strcpy(name[j],name[j - 1]);
+                strcpy(name[j - 1],hold);
+            }
+        }
+    }
+    // ecriture dans le fichier temp
+    for (i = 0 ; i <= last ; i++) {
+        if( strcmp(name[i],"") != 0) {
+            if(i == last ) {
+                fprintf(fDico,"%s",name[i]);
+            }else {
+                fprintf(fDico,"%s\n",name[i]);
+            }
+        }
+    }
+
+    fclose(fDico);
+    remove(txtName);
+    rename(dicoName, txtName);
+
+        return 1;
 }
