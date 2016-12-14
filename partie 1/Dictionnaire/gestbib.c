@@ -590,9 +590,9 @@ unsigned int txtToDico () {
      int last ; /* index of last item in array */
     printf("Veullez choisir entrer le nom du fichier txt");
     char *txtName = fUse();
-     const char dicoName[26] = {".\\ressources\\temp.txt"};
+    const char dicoName[26] = {".\\ressources\\temp.txt"};
 
-    FILE *fTxt = fopen("readFile.txt","r");
+    FILE *fTxt = fopen(txtName,"r");
     FILE *fDico = fopen(dicoName,"w");
     
     if(fExiste(fTxt) == 0) {
