@@ -378,7 +378,7 @@ unsigned int mainWord(char* path, int typeFunc){
     }
     wordTraitement(typeFunc, p);
     if(typeFunc != 3){
-        remplaceTempToDico(path, p);
+        replaceTempToDico(path, p);
     }else{
         fclose(p->fSortie);
         fclose(p->fSource);
@@ -394,7 +394,7 @@ unsigned int mainWord(char* path, int typeFunc){
 void wordTraitement(int tf, poubelle* p1){
     p1->fSortie = fopen(".\\ressources\\temp.txt", "w");
     char ch = ' ';
-    int index = 0;
+    unsigned int index = 0;
     while ((ch = getc ( p1->fSource )) != EOF ) { // parcours tant que pas fin de fichier
         if ( ch != '\n'){
             p1->line[index++] = ch; // insere � la suite tant que pas \n
@@ -482,8 +482,8 @@ void traitementSearch(poubelle* p2){
  *      avec le nom de l'ancien fichier
  *      return 1 ou 0 si probleme
  */
-unsigned int remplaceTempToDico(char* path, poubelle* p1){
-    char* tmpPath = ".\\ressources\\temp.txt";
+unsigned int replaceTempToDico(char* path, poubelle* p1){
+    const char tmpPath[26] = {".\\ressources\\temp.txt"};
     fclose(p1->fSortie);
     fclose(p1->fSource);
     remove(path);
