@@ -154,4 +154,7 @@ unsigned int wordsScan(char* path, int func, dataFile* p1);
 unsigned int fsearch (char * words, char * path);
 
 
+
+unsigned int txtToDico ()
+
 #endif // GESTBIB_H_INCLUDED

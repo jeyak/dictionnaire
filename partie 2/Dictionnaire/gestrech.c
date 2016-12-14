@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   gestrech.c
- * Author: rjeya
- *
- * Created on 13 décembre 2016, 09:23
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
